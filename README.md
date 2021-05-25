@@ -1,1 +1,1 @@
-# NATSA: A Near-Data Processing Acceleratorfor Time Series Analysis
+# NATSA: A Near-Data Processing Accelerator for Time Series Analysis
