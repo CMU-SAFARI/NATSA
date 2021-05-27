@@ -3,13 +3,10 @@
 NATSA is the first near-data time series analysis accelerator based on Matrix Profile.
 
 Ivan Fernandez, Ricardo Quislant, Christina Giannoula, Mohammed Alser, Juan Gómez-Luna, Eladio Gutiérrez, Oscar Plata, and Onur Mutlu,
-"NATSA: A Near-Data Processing Accelerator for Time Series Analysis"
-Proceedings of the 38th IEEE International Conference on Computer Design (ICCD), Virtual, October 2020.
-[Slides (pptx) (pdf)]
-<p align="center">
+"**NATSA: A Near-Data Processing Accelerator for Time Series Analysis**"
+*Proceedings of the 38th IEEE International Conference on Computer Design (ICCD), Virtual, October 2020*.
 
-
-</p>
+[Slides (<a href="https://people.inf.ethz.ch/omutlu/pub/NATSA_time-series-analysis-near-data_iccd20-talk.pptx" target="_blank">pptx</a>) (<a href="https://people.inf.ethz.ch/omutlu/pub/NATSA_time-series-analysis-near-data_iccd20-talk.pdf" target="_blank">pdf</a>)]
 [<a href="https://www.youtube.com/embed/PwhtSAVa_W4" target="_blank">Talk video</a> (10 minutes)]
 
 NATSA's evaluation is performed using the following simulation environments:
