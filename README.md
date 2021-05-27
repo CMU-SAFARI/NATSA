@@ -7,11 +7,12 @@ Ivan Fernandez, Ricardo Quislant, Christina Giannoula, Mohammed Alser, Juan Góm
 Proceedings of the 38th IEEE International Conference on Computer Design (ICCD), Virtual, October 2020.
 [Slides (pptx) (pdf)]
 <p align="center">
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/PwhtSAVa_W4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<a href="https://www.youtube.com/embed/PwhtSAVa_W4" target="_blank">alt="Talk video" width="440" border="10" /></a>
+
 </p>
 [Talk Video (10 minutes)]
 
-NATSA's evaluation is performed using the following simulation enviromnemts:
+NATSA's evaluation is performed using the following simulation environments:
 
 ramulator-pim: https://github.com/CMU-SAFARI/ramulator-pim
 
