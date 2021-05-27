@@ -7,10 +7,10 @@ Ivan Fernandez, Ricardo Quislant, Christina Giannoula, Mohammed Alser, Juan Góm
 Proceedings of the 38th IEEE International Conference on Computer Design (ICCD), Virtual, October 2020.
 [Slides (pptx) (pdf)]
 <p align="center">
-<a href="https://www.youtube.com/embed/PwhtSAVa_W4" target="_blank">alt="Talk video" width="440" border="10" /></a>
+
 
 </p>
-[Talk Video (10 minutes)]
+[<a href="https://www.youtube.com/embed/PwhtSAVa_W4" target="_blank">Talk video</a> (10 minutes)]
 
 NATSA's evaluation is performed using the following simulation environments:
 
