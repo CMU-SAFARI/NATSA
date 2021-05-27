@@ -82,9 +82,9 @@ void preprocess()
 
   for (int i = 0; i < ProfileLength; i++)
   {
-      AMean[i] = ASum[i]/ windowSize;
-      ASigmaSq[i] = ASumSq[i] / windowSize - AMean[i] * AMean[i];
-      ASigma[i] = sqrt(ASigmaSq[i]);
+    AMean[i] = ASum[i]/ windowSize;
+    ASigmaSq[i] = ASumSq[i] / windowSize - AMean[i] * AMean[i];
+    ASigma[i] = sqrt(ASigmaSq[i]);
   }
 
   delete ACumSum;
@@ -93,319 +93,110 @@ void preprocess()
   delete ASumSq;
   delete ASigmaSq;
 }
-/*
-void scrimp()
-{
-
-  #pragma omp parallel
-  {
-    DTYPE  lastz, distance, windowSizeDTYPE;
-    int diag, my_offset, i, j, ri;
-
-    windowSizeDTYPE = (DTYPE) windowSize;
-
-    my_offset = omp_get_thread_num() * ProfileLength;
-
-//unsigned counte    if(omp_get_thread_num() == 0)
-      {
-	  std::cout << counter << std::endl;
-	counter++;
-      }
-      //std::cout << ri << std::endl;
-
-
-      diag = idx[ri];
-
-      lastz = 0;
-
-      //calculate the dot product of every two time series values that ar diag away
-      for (j = diag; j < windowSize + diag; j++)
-      {
-        lastz += A[j] * A[j-diag];
-      }
-
-      //j is the column index, i is the row index of the current distance value in the distance matrix
-      j = diag;
-      i = 0;
-
-      //evaluate the distance based on the dot product
-      distance = 2 * (windowSizeDTYPE - (lastz - windowSizeDTYPE* AMean[j] * AMean[i]) / (ASigma[j] * ASigma[i]));
-
-      //update matrix profile and matrix profile index if the current distance value is smaller
-      if (distance < profile_tmp[my_offset + j])
-      {
-        profile_tmp[my_offset + j] = distance;
-        profileIndex_tmp [my_offset+j] = i;
-      }
-
-      if (distance < profile_tmp[my_offset + i])
-      {
-        profile_tmp[my_offset + i] = distance;
-        profileIndex_tmp [my_offset + i] = j;
-      }
-      i = 1;
-      j = diag + 1;
-
-      for(j = diag + 1; j < ProfileLength; j++)
-      {
-          lastz += (A[j + windowSize - 1] * A[i + windowSize - 1]) - (A[j - 1] * A[i - 1]);
-
-          distance =  2 * (windowSizeDTYPE - (lastz -  AMean[j]  * AMean[i] * windowSizeDTYPE) / (ASigma[j] * ASigma[i]));
-          if (distance < profile_tmp[my_offset + j])
-          {
-            profile_tmp[ my_offset + j] = distance;
-            profileIndex_tmp [my_offset+ j] = i;
-          }
-
-         if (distance < profile_tmp[my_offset + i])
-          {
-            profile_tmp[my_offset + i] = distance;
-            profileIndex_tmp[my_offset + i] = j;
-          }
-
-	i++;
-      }
-
-    }
-
-    #pragma omp barrier
-
-    // Reduce the (partial) result
-    DTYPE min_distance;
-    int min_index;
-
-    #pragma omp for schedule(static)
-    for (int colum = 0; colum < ProfileLength; colum++)
-    {
-      min_distance = std::numeric_limits<DTYPE>::infinity();
-      min_index = 0;
-      #pragma unroll(256)
-      for(int row = 0; row < numThreads; row++)
-      {
-        if(profile_tmp[colum + (row*ProfileLength)] < min_distance)
-        {
-          min_distance = profile_tmp[colum + (row * ProfileLength)];
-          min_index    = profileIndex_tmp[colum + (row * ProfileLength)];
-        }
-      }
-      profile[colum]      = min_distance;
-      profileIndex[colum] = min_index;
-    }
-    #pragma omp barrier
-  }
-
-  delete(AMean);
-  delete(ASigma);
-  delete(profile_tmp);
-  delete(profileIndex_tmp);
-}
-*/
 
 void scrimp()
-
 {
-
-
-
   #pragma omp parallel
-
   {
-
-    DTYPE   distance, windowSizeDTYPE;
-
-    DTYPE  * distances, * lastzs;
-
+    DTYPE distance, windowSizeDTYPE;
+    DTYPE *distances, *lastzs;
     int diag, my_offset, i, j, ri;
-
-
-
     DTYPE lastz;
-
-
-
     windowSizeDTYPE = (DTYPE) windowSize;
-
-
-
     my_offset = omp_get_thread_num() * ProfileLength;
-
-
 
     #pragma omp for schedule(dynamic)
 
     for (ri = 0; ri < idx.size() / completion_factor; ri++)
-
     {
 
       //select a diagonal
-
       diag = idx[ri];
-
-
-
       lastz = 0;
 
-
-
       //calculate the dot product of every two time series values that ar diag away
-
       #pragma omp simd
-
       for (j = diag; j < windowSize + diag; j++)
-
       {
-
         lastz += A[j] * A[j-diag];
-
       }
-
-
 
       //j is the column index, i is the row index of the current distance value in the distance matrix
-
       j = diag;
-
       i = 0;
 
-
-
       //evaluate the distance based on the dot product
-
       distance = 2 * (windowSizeDTYPE - (lastz - windowSizeDTYPE * AMean[j] * AMean[i]) / (ASigma[j] * ASigma[i]));
 
-
-
-
-
       //update matrix profile and matrix profile index if the current distance value is smaller
-
       if (distance < profile_tmp[my_offset + j])
-
       {
-
         profile_tmp[my_offset + j]     = distance;
-
         profileIndex_tmp [my_offset+j] = i;
-
       }
 
-
-
       if (distance < profile_tmp[my_offset + i])
-
       {
-
         profile_tmp[my_offset + i]       = distance;
-
         profileIndex_tmp [my_offset + i] = j;
-
       }
 
       i = 1;
-
-
-
-      for(j=diag+1; j< ProfileLength; j++)
-
+      for(j = diag + 1; j < ProfileLength; j++)
       {
-
-
-
         lastz += (A[ j + windowSize - 1] * A[i + windowSize - 1]) - (A[j - 1] * A[i - 1]);
-
         distance =  2 * (windowSizeDTYPE - (lastz -  AMean[j]  * AMean[i] * windowSizeDTYPE) / (ASigma[j] * ASigma[i]));
 
-
-
         if (distance < profile_tmp[my_offset + j])
-
         {
-
           profile_tmp[my_offset + j] = distance;
-
           profileIndex_tmp [my_offset+ j] = i;
-
         }
 
-
-
         if (distance < profile_tmp[my_offset + i])
-
         {
-
           profile_tmp[my_offset + i] = distance;
-
           profileIndex_tmp[my_offset + i] = j;
-
         }
 
         i++;
-
       }
-
     }
-
-
 
     #pragma omp barrier
 
-
-
     // Reduce the (partial) result
-
     DTYPE min_distance;
-
     int min_index;
 
-
-
     #pragma omp for schedule(static)
-
     for (int colum = 0; colum < ProfileLength; colum++)
-
     {
-
       min_distance = std::numeric_limits<DTYPE>::infinity();
-
       min_index = 0;
 
       for(int row = 0; row < numThreads; row++)
-
       {
-
-        if(profile_tmp[colum + (row*ProfileLength)] < min_distance)
-
+        if(profile_tmp[colum + (row * ProfileLength)] < min_distance)
         {
-
           min_distance = profile_tmp[colum + (row * ProfileLength)];
-
           min_index    = profileIndex_tmp[colum + (row * ProfileLength)];
-
         }
-
       }
 
       profile[colum]      = min_distance;
-
       profileIndex[colum] = min_index;
-
     }
 
     #pragma omp barrier
-
   }
 
-
-
   delete(AMean);
-
   delete(ASigma);
-
   delete(profile_tmp);
-
   delete(profileIndex_tmp);
-
 }
+
 int main(int argc, char* argv[])
 {
   bool sequentialDiags = false;
@@ -425,11 +216,10 @@ int main(int argc, char* argv[])
 
   // Set computational order
   if(argc > 4)
-  	sequentialDiags = (strcmp(argv[4], "-s") == 0);
+  sequentialDiags = (strcmp(argv[4], "-s") == 0);
 
   if(!sequentialDiags && argc > 4)
-	completion_factor = atoi(argv[4]);
-
+  completion_factor = atoi(argv[4]);
 
   // Display info through console
   std::cout << std::endl;
@@ -492,7 +282,6 @@ int main(int argc, char* argv[])
 
   profile          = new DTYPE[ProfileLength];
   profileIndex     = new int[ProfileLength];
-
   profile_tmp      = new DTYPE[ProfileLength * numThreads];
   profileIndex_tmp = new int[ProfileLength * numThreads];
 
@@ -505,13 +294,12 @@ int main(int argc, char* argv[])
   // Random shuffle the diagonals
   idx.clear();
   for (int i = exclusionZone+1; i < ProfileLength; i++)
-    idx.push_back(i);
+  idx.push_back(i);
 
   if(!sequentialDiags)
-    std::random_shuffle(idx.begin(), idx.end());
+  std::random_shuffle(idx.begin(), idx.end());
 
   zsim_roi_begin();
-
   /******************** SCRIMP ********************/
   std::cout << "[>>] Performing SCRIMP..." << std::endl;
   tstart = std::chrono::high_resolution_clock::now();
@@ -521,9 +309,7 @@ int main(int argc, char* argv[])
   tend = std::chrono::high_resolution_clock::now();
   time_elapsed = tend - tstart;
   std::cout << "[OK] SCRIMP Time:             " << std::setprecision(std::numeric_limits<DTYPE>::digits10 + 2) << time_elapsed.count() << " seconds." << std::endl;
-
   zsim_roi_end();
-
 
   // Save profile to file
   std::cout << "[>>] Saving Profile..." << std::endl;

@@ -3,20 +3,19 @@
 #include <math.h>
 
 // PROGRAM PARAMETERS
-#define TIMESERIESLENGTH 1024
+#define TIMESERIESLENGTH 16384
 #define WINDOWSIZE 256
 #define DIAGONAL_UNROLL 128
 #define COMPLETION_REDUCTION 32
-#define DTYPE float
-
+#define DTYPE double
 
 void scrimp(DTYPE* tSeries, DTYPE* AMean, DTYPE* ASigma, int ProfileLength,
   int windowSize, int* idx, DTYPE* profile, int* profileIdxs, int exclusionZone, DTYPE * distances, DTYPE * lastzs)
   {
 
-    for (int ri = 0; ri < (ProfileLength - (exclusionZone +1)) /COMPLETION_REDUCTION; ri++)
+    for (int ri = 0; ri < (ProfileLength - (exclusionZone +1)) / COMPLETION_REDUCTION; ri++)
     {
-      //select a random subsequence
+      // Select a random subsequence
       int subseq = idx[ri];
 
       DTYPE lastz = 0;
@@ -26,7 +25,7 @@ void scrimp(DTYPE* tSeries, DTYPE* AMean, DTYPE* ASigma, int ProfileLength,
         lastz += tSeries[j + subseq]* tSeries[j];
       }
 
-      //evaluate the distance based on the dot product
+      // Evaluate the distance based on the dot product
       DTYPE distance = 2 * (windowSize - (lastz - windowSize * AMean[subseq]
         * AMean[0]) / (ASigma[subseq] * ASigma[0]));
 
@@ -42,12 +41,10 @@ void scrimp(DTYPE* tSeries, DTYPE* AMean, DTYPE* ASigma, int ProfileLength,
         }
 
         int i = 1;
-
         int jj = subseq + 1;
 
         while(jj < (ProfileLength - DIAGONAL_UNROLL))
         {
-
           diagonal1: for(int k = 0; k < DIAGONAL_UNROLL; k++)
           {
             lastzs[k] = (tSeries[k + jj + windowSize - 1] * tSeries[k + i + windowSize - 1]) - (tSeries[k + jj - 1] * tSeries[k + i - 1]);
@@ -108,66 +105,64 @@ void scrimp(DTYPE* tSeries, DTYPE* AMean, DTYPE* ASigma, int ProfileLength,
 
     int main(int argc, char* argv[])
     {
-      int windowSize, timeSeriesLength, ProfileLength, exclusionZone;
-
-      DTYPE AMean  [TIMESERIESLENGTH];
-      DTYPE ASigma [TIMESERIESLENGTH];
-
-      DTYPE tSeries [TIMESERIESLENGTH];
-      DTYPE lastzs [DIAGONAL_UNROLL];
+      // Array declarations
+      DTYPE AMean     [TIMESERIESLENGTH];
+      DTYPE ASigma    [TIMESERIESLENGTH];
+      DTYPE tSeries   [TIMESERIESLENGTH];
+      DTYPE lastzs    [DIAGONAL_UNROLL];
       DTYPE distances [DIAGONAL_UNROLL];
-      DTYPE profile [TIMESERIESLENGTH];
+      DTYPE profile   [TIMESERIESLENGTH];
+      int profileIdxs [TIMESERIESLENGTH];
+      int idx         [TIMESERIESLENGTH];
 
-      int profileIdxs[TIMESERIESLENGTH];
-      int idx[TIMESERIESLENGTH];
+      // Set Matrix Profile parameters
+      int timeSeriesLength = TIMESERIESLENGTH;
+      int windowSize       = WINDOWSIZE;
+      int ProfileLength    = timeSeriesLength - windowSize + 1;
+      int exclusionZone    = windowSize / 4;
 
-      timeSeriesLength = TIMESERIESLENGTH;
-      windowSize       = WINDOWSIZE;
-
+      // Generate a random time series
       for (int i = 0; i < timeSeriesLength; i++)
       {
         tSeries[i] = ((DTYPE)(rand() % 50)) / 10 + 1;
       }
 
-
-
-      // set Matrix Profile Length
-      ProfileLength = timeSeriesLength - windowSize + 1;
-
-      exclusionZone = windowSize / 4;
-
       // preprocess, statistics, get the mean and standard deviation of every subsequence in the time series
       DTYPE ACumSum [TIMESERIESLENGTH];
       ACumSum[0] = tSeries[0];
       for (int ii = 1; ii < timeSeriesLength; ii++)
-      ACumSum[ii] = tSeries[ii] + ACumSum[ii - 1];
+        ACumSum[ii] = tSeries[ii] + ACumSum[ii - 1];
+
       DTYPE ASqCumSum[TIMESERIESLENGTH];
       ASqCumSum[0] = tSeries[0] * tSeries[0];
       for (int iii = 1; iii < timeSeriesLength; iii++)
-      ASqCumSum[iii] = tSeries[iii] * tSeries[iii] + ASqCumSum[iii - 1];
+        ASqCumSum[iii] = tSeries[iii] * tSeries[iii] + ASqCumSum[iii - 1];
+
       DTYPE ASum[TIMESERIESLENGTH];
       ASum[0] = ACumSum[windowSize - 1];
       for (int iiii = 0; iiii < timeSeriesLength - windowSize; iiii++)
-      ASum[iiii + 1] = ACumSum[windowSize + iiii] - ACumSum[iiii];
+        ASum[iiii + 1] = ACumSum[windowSize + iiii] - ACumSum[iiii];
+
       DTYPE ASumSq[TIMESERIESLENGTH];
       ASumSq[0] = ASqCumSum[windowSize - 1];
       for (int ij = 0; ij < timeSeriesLength - windowSize; ij++)
-      ASumSq[ij + 1] = ASqCumSum[windowSize + ij] - ASqCumSum[ij];
+        ASumSq[ij + 1] = ASqCumSum[windowSize + ij] - ASqCumSum[ij];
+
       for (int ijj = 0; ijj < ProfileLength; ijj++)
-      AMean[ijj] = ASum[ijj] / windowSize;
+        AMean[ijj] = ASum[ijj] / windowSize;
+
       DTYPE ASigmaSq[TIMESERIESLENGTH];
       for (int ik = 0; ik < ProfileLength; ik++)
-      ASigmaSq[ik] = ASumSq[ik] / windowSize - AMean[ik] * AMean[ik];
-      for (int ikk = 0; ikk < ProfileLength; ikk++)
-      ASigma[ikk] = sqrt(ASigmaSq[ikk]);
+        ASigmaSq[ik] = ASumSq[ik] / windowSize - AMean[ik] * AMean[ik];
 
-      int starting_counter=exclusionZone+1;
-      int ending_counter = ProfileLength -1;
+      for (int ikk = 0; ikk < ProfileLength; ikk++)
+        ASigma[ikk] = sqrt(ASigmaSq[ikk]);
 
       // Static scheduling
+      int starting_counter = exclusionZone + 1;
+      int ending_counter   = ProfileLength - 1;
       for (int ig = exclusionZone + 1; ig < ProfileLength; ig+=2)
       {
-        //idx[i - (exclusionZone + 1)] = i;
         idx[ig - (exclusionZone + 1)] = starting_counter;
         idx[ig - (exclusionZone)]     = ending_counter;
         starting_counter++;
@@ -194,11 +189,9 @@ void scrimp(DTYPE* tSeries, DTYPE* AMean, DTYPE* ASigma, int ProfileLength,
             minDistance    = profile[ia];
             minDistanceIdx = profileIdxs[ia];
           }
-
         }
-
         minDistance = sqrt(minDistance);
-
+      
         printf("---------------------------------------------------\n");
         printf("Min: %f Idx: %d\n", minDistance, minDistanceIdx);
         printf("---------------------------------------------------\n\n");

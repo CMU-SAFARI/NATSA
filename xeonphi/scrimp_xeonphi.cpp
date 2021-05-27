@@ -49,12 +49,10 @@ DTYPE *AMean, *ASigma, *profile, *profile_tmp;
 std::vector<int> idx;
 std::vector<DTYPE> A;
 
-
 void intHandler(int) {
-    std::cout << '\n' << "[>>] Interrupt request by user..." << '\n';
-    interrupt = true;
+  std::cout << '\n' << "[>>] Interrupt request by user..." << '\n';
+  interrupt = true;
 }
-
 
 void preprocess()
 {
@@ -93,9 +91,9 @@ void preprocess()
 
   for (int i = 0; i < ProfileLength; i++)
   {
-      AMean[i] = ASum[i]/ windowSize;
-      ASigmaSq[i] = ASumSq[i] / windowSize - AMean[i] * AMean[i];
-      ASigma[i] = sqrt(ASigmaSq[i]);
+    AMean[i] = ASum[i]/ windowSize;
+    ASigmaSq[i] = ASumSq[i] / windowSize - AMean[i] * AMean[i];
+    ASigma[i] = sqrt(ASigmaSq[i]);
   }
 
   delete ACumSum;
@@ -137,100 +135,99 @@ void scrimp()
 
       if(!interrupt){
 
-      diag = idx[ri];
+        diag = idx[ri];
+        lastz = 0;
 
-      lastz = 0;
-
-      //calculate the dot product of every two time series values that ar diag away
-      #pragma omp simd
-      for (j = diag; j < windowSize + diag; j++)
-      {
-        lastz += A[j] * A[j-diag];
-      }
-
-      //j is the column index, i is the row index of the current distance value in the distance matrix
-      j = diag;
-      i = 0;
-
-      //evaluate the distance based on the dot product
-      distance = 2 * (windowSizeDouble - (lastz - windowSizeDouble* AMean[j] * AMean[i]) / (ASigma[j] * ASigma[i]));
-
-      //update matrix profile and matrix profile index if the current distance value is smaller
-      if (distance < profile_tmp[my_offset + j])
-      {
-        profile_tmp[my_offset + j] = distance;
-        profileIndex_tmp [my_offset+j] = i;
-      }
-
-      if (distance < profile_tmp[my_offset + i])
-      {
-        profile_tmp[my_offset + i] = distance;
-        profileIndex_tmp [my_offset + i] = j;
-      }
-      i = 1;
-      j = diag + 1;
-
-      while(j < (ProfileLength - ARIT_FACT))
-      {
+        //calculate the dot product of every two time series values that ar diag away
         #pragma omp simd
-        for(int k = 0; k < ARIT_FACT; k++)
+        for (j = diag; j < windowSize + diag; j++)
         {
-          lastzs[k] = (A[k + j + windowSize - 1] * A[k + i + windowSize - 1]) - (A[k + j - 1] * A[k + i - 1]);
+          lastz += A[j] * A[j-diag];
         }
 
-        lastzs[0] += lastz;
-        #pragma unroll (ARIT_FACT - 1)
-        for(int k = 1; k < ARIT_FACT; k++)
-        {
-          lastzs[k] += lastzs[k-1];
-        }
-        lastz = lastzs[ARIT_FACT - 1];
+        //j is the column index, i is the row index of the current distance value in the distance matrix
+        j = diag;
+        i = 0;
 
-        #pragma omp simd
-        for(int k = 0; k < ARIT_FACT; k++)
-        {
-          distances[k] =  2 * (windowSizeDouble - (lastzs[k] -  AMean[k+j]  * AMean[k+i] * windowSizeDouble) / (ASigma[k+j] * ASigma[k+i]));
-        }
+        //evaluate the distance based on the dot product
+        distance = 2 * (windowSizeDouble - (lastz - windowSizeDouble* AMean[j] * AMean[i]) / (ASigma[j] * ASigma[i]));
 
-        #pragma omp simd
-        for(int k = 0; k < ARIT_FACT; k++)
-        {
-          if (distances[k] < profile_tmp[k + my_offset + j])
-          {
-            profile_tmp[k + my_offset + j] = distances[k];
-            profileIndex_tmp [k + my_offset+ j] = i + k;
-          }
-
-         if (distances[k] < profile_tmp[k + my_offset + i])
-          {
-            profile_tmp[k + my_offset + i] = distances[k];
-            profileIndex_tmp[k + my_offset + i] = j + k;
-          }
-        }
-        i+=ARIT_FACT;
-        j+=ARIT_FACT;
-      }
-
-      while(j < ProfileLength)
-      {
-        lastz   = lastz + (A[j + windowSize - 1] * A[i + windowSize - 1]) - (A[j - 1] * A[i - 1]);
-        distance = 2 * (windowSizeDouble - (lastz -  AMean[j]  * AMean[i] * windowSizeDouble) / (ASigma[j] * ASigma[i]));
-
+        //update matrix profile and matrix profile index if the current distance value is smaller
         if (distance < profile_tmp[my_offset + j])
         {
           profile_tmp[my_offset + j] = distance;
-          profileIndex_tmp [my_offset+ j] = i;
+          profileIndex_tmp [my_offset+j] = i;
         }
 
         if (distance < profile_tmp[my_offset + i])
         {
           profile_tmp[my_offset + i] = distance;
-          profileIndex_tmp[my_offset + i] = j;
+          profileIndex_tmp [my_offset + i] = j;
         }
-        i++;
-        j++;
+        i = 1;
+        j = diag + 1;
+
+        while(j < (ProfileLength - ARIT_FACT))
+        {
+          #pragma omp simd
+          for(int k = 0; k < ARIT_FACT; k++)
+          {
+            lastzs[k] = (A[k + j + windowSize - 1] * A[k + i + windowSize - 1]) - (A[k + j - 1] * A[k + i - 1]);
+          }
+
+          lastzs[0] += lastz;
+          #pragma unroll (ARIT_FACT - 1)
+          for(int k = 1; k < ARIT_FACT; k++)
+          {
+            lastzs[k] += lastzs[k-1];
+          }
+          lastz = lastzs[ARIT_FACT - 1];
+
+          #pragma omp simd
+          for(int k = 0; k < ARIT_FACT; k++)
+          {
+            distances[k] =  2 * (windowSizeDouble - (lastzs[k] -  AMean[k+j]  * AMean[k+i] * windowSizeDouble) / (ASigma[k+j] * ASigma[k+i]));
+          }
+
+          #pragma omp simd
+          for(int k = 0; k < ARIT_FACT; k++)
+          {
+            if (distances[k] < profile_tmp[k + my_offset + j])
+            {
+              profile_tmp[k + my_offset + j] = distances[k];
+              profileIndex_tmp [k + my_offset+ j] = i + k;
+            }
+
+            if (distances[k] < profile_tmp[k + my_offset + i])
+            {
+              profile_tmp[k + my_offset + i] = distances[k];
+              profileIndex_tmp[k + my_offset + i] = j + k;
+            }
+          }
+          i+=ARIT_FACT;
+          j+=ARIT_FACT;
+        }
+
+        while(j < ProfileLength)
+        {
+          lastz   = lastz + (A[j + windowSize - 1] * A[i + windowSize - 1]) - (A[j - 1] * A[i - 1]);
+          distance = 2 * (windowSizeDouble - (lastz -  AMean[j]  * AMean[i] * windowSizeDouble) / (ASigma[j] * ASigma[i]));
+
+          if (distance < profile_tmp[my_offset + j])
+          {
+            profile_tmp[my_offset + j] = distance;
+            profileIndex_tmp [my_offset+ j] = i;
+          }
+
+          if (distance < profile_tmp[my_offset + i])
+          {
+            profile_tmp[my_offset + i] = distance;
+            profileIndex_tmp[my_offset + i] = j;
+          }
+          i++;
+          j++;
+        }
       }
-    }
     }
 
     if(hbm_alloc)
@@ -309,11 +306,11 @@ int main(int argc, char* argv[])
 
   // Set computational order
   if(argc > 4)
-        sequentialDiags = (strcmp(argv[4], "-s") == 0);
+  sequentialDiags = (strcmp(argv[4], "-s") == 0);
 
   // Set computational order
   if(argc > 5)
-        hbm_alloc = !(strcmp(argv[5], "-nohbm") == 0);
+  hbm_alloc = !(strcmp(argv[5], "-nohbm") == 0);
 
   // Display info through console
   std::cout << std::endl;
@@ -372,11 +369,11 @@ int main(int argc, char* argv[])
   time_elapsed = tend - tstart;
   std::cout << "[OK] Preprocess Time:         " << std::setprecision(std::numeric_limits<double>::digits10 + 2) << time_elapsed.count() << " seconds." << std::endl;
 
-	//Initialize Matrix Profile and Matrix Profile Index
+  //Initialize Matrix Profile and Matrix Profile Index
   std::cout << "[>>] Initializing Profile..." << std::endl;
   tstart = std::chrono::high_resolution_clock::now();
 
-	profile          = new DTYPE[ProfileLength];
+  profile          = new DTYPE[ProfileLength];
   profileIndex     = new int[ProfileLength];
 
   if(hbm_alloc)
@@ -394,15 +391,13 @@ int main(int argc, char* argv[])
   time_elapsed = tend - tstart;
   std::cout << "[OK] Initialize Profile Time: " << std::setprecision(std::numeric_limits<DTYPE>::digits10 + 2) << time_elapsed.count() << " seconds." << std::endl;
 
-
-
   // Random shuffle the diagonals
   idx.clear();
   for (int i = exclusionZone+1; i < ProfileLength; i++)
-    idx.push_back(i);
+  idx.push_back(i);
 
   if(!sequentialDiags)
-    std::random_shuffle(idx.begin(), idx.end());
+  std::random_shuffle(idx.begin(), idx.end());
 
   /******************** SCRIMP ********************/
   std::cout << "[>>] Performing SCRIMP..." << std::endl;
