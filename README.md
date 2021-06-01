@@ -3,7 +3,7 @@
 NATSA is the first near-data time series analysis accelerator based on Matrix Profile.
 
 
-> :warning: ** This repository contains the codes used in NATSA's performance and energy evaluation for our ICCD 2020 paper. **: Be very careful here!
+> :warning: **This repository contains the codes used in NATSA's performance and energy evaluation for our ICCD 2020 paper.**: Be very careful here!
 
 
 ## Citation
