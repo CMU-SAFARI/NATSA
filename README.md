@@ -3,7 +3,7 @@
 NATSA is the first near-data time series analysis accelerator based on Matrix Profile.
 
 
-
+> :warning: ** This repository contains the codes used in NATSA's performance and energy evaluation for our ICCD 2020 paper. **: Be very careful here!
 
 
 ## Citation
@@ -13,8 +13,6 @@ Please cite the following paper if you find NATSA useful:
 Ivan Fernandez, Ricardo Quislant, Christina Giannoula, Mohammed Alser, Juan Gómez-Luna, Eladio Gutiérrez, Oscar Plata, and Onur Mutlu,
 "**NATSA: A Near-Data Processing Accelerator for Time Series Analysis**"
 *Proceedings of the 38th IEEE International Conference on Computer Design (ICCD), Virtual, October 2020*.
-
-
 
 
 ## Repository Structure and Usage
@@ -44,7 +42,7 @@ NATSA's evaluation requires the following simulation frameworks. Please refer to
 
 Additionaly, the Xeon Phi code requires a supported processor (e.g., Intel Xeon Phi 7210) and the GPU code requires a CUDA-capable GPU.
 
-> :warning: **If you are interested on **: Be very careful here!
+
 
 ## Other Resources
 
