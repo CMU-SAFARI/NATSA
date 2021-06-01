@@ -1,10 +1,3 @@
-███╗   ██╗ █████╗ ████████╗███████╗ █████╗ 
-████╗  ██║██╔══██╗╚══██╔══╝██╔════╝██╔══██╗
-██╔██╗ ██║███████║   ██║   ███████╗███████║
-██║╚██╗██║██╔══██║   ██║   ╚════██║██╔══██║
-██║ ╚████║██║  ██║   ██║   ███████║██║  ██║
-╚═╝  ╚═══╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
-
 # NATSA: A Near-Data Processing Accelerator for Time Series Analysis
 
 NATSA is the first near-data time series analysis accelerator based on Matrix Profile (SCRIMP). The key idea behind NATSA is to exploit modern 3D-stacked High Bandwidth Memory (HBM) to enable effcient and fast matrix profile computation near memory. NATSA provides three key benefits: 1) quickly computing the matrix profile for a wide range of applications by building specialized energy-effcient foating-point arithmetic processing units close to HBM, 2) improving the energy effciency and execution time by reducing the need for data movement over slow and energy-hungry buses between the computation units and the memory units, and 3) analyzing time seriesdata at scale by exploiting low-latency, high-bandwidth, and energy-efficient memory access provided by HBM.
