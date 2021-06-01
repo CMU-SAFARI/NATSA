@@ -16,3 +16,21 @@ ramulator-pim: https://github.com/CMU-SAFARI/ramulator-pim
 gem5-aladdin: https://github.com/harvard-acc/gem5-aladdin
 
 McPAT: https://github.com/HewlettPackard/mcpat
+
+
+## Repository Structure and Installation
+
+We point out next the repository structure and some important folders and files.
+```
+.
++-- README.md
++-- aladdin/
+|   +-- config_files/
+|   +-- scrimp_src/
++-- gpu/
++-- timeseries/
++-- xeonphi/
++-- zsimramulator/
+|   +-- config_files/
+|	|	+-- scrimp/
+|   +-- scrimp_src/
