@@ -47,14 +47,15 @@ We point out next the repository structure and some important folders and files.
 
 NATSA's evaluation requires the following simulation frameworks. Please refer to their corresponding documentation to install them and their dependencies. 
 * ramulator-pim: https://github.com/CMU-SAFARI/ramulator-pim
-* gem5-aladdin: https://github.com/harvard-acc/gem5-aladdin
 * McPAT: https://github.com/HewlettPackard/mcpat
+* gem5-aladdin: https://github.com/harvard-acc/gem5-aladdin
+
 
 Additionaly, the Xeon Phi code requires a supported processor (e.g., Intel Xeon Phi 7210) and the GPU code requires a CUDA-capable GPU.
 
 ### General-purpose cores simulation
 
-The general purpose cores performance can be simulated using ramulator-pim enviromnment and the files provided in `zsimramulator` folder. Please refer to ramulator-pim documentation to set up the environment. The source code of SCRIMP, ready to be used in ramulator-pim is under the folder `zsimramulator\scrimp_src`, which has to be compiled before running the simulator. Once the desired configuration file is properly adjusted with the users's paths, the simulator can be started as follows:
+The general purpose cores performance can be simulated using ramulator-pim enviromnment and the files provided in `zsimramulator` folder. Please refer to ramulator-pim documentation to set up the environment. The source code of SCRIMP, ready to be used in ramulator-pim is under the folder `zsimramulator/scrimp_src`, which has to be compiled before running the simulator. Once the desired configuration file is properly adjusted with the users's paths, the simulator can be started as follows:
 
 ```
 ./build/opt/zsim config_files/scrimp/262144/2048/arm/hbm/64/scrimp_arm_hbm.cfg
@@ -70,10 +71,24 @@ The general purpose cores energy and area can be estimated using McPAT and the c
 
 ### NATSA simulation
 
+The performance, area and energy of NATSA can be simulated using gem5-aladdin simulation framework and the files provided in `aladdin` folder. Please refer to gem5-aladdin documentation to set up the environment. The source file of SCRIMP, optimized for NATSA is located under `aladdin/scrimp_src`, which can be tunned according to the desired time series parameters.
+
+To run it, simply launch gem5 with default HBM memory model and pass the `.cfg`file to aladdin.
+
 
 ### Xeon Phi and GPU execution
 
+The code to perform the Xeon Phi executions is located under `xeonphi` folder, simply `make` it and run it with the desired time series (example time series are located under `timeseries` folder. This is an example execution for a time series of 524288 elements, window size of 4096 and 256 threads:
 
+```
+./scrimp_xeonphi 4096 randomSerie524288.txt 4096 256
+```
+
+The code to perform the GPU executions is located under `gpu` folder, which requires a CUDA-capable GPU to run. Once compiled using the provided `Makefile`, it can be executed as follows:
+
+```
+./SCRIMP 4096 randomSerie524288.txt out.txt
+```
 
 ## Other Resources
 
