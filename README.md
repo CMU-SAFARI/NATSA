@@ -4,10 +4,11 @@
   <img width="722" height="140" src="https://github.com/CMU-SAFARI/NATSA/blob/main/images/natsa_logo.png">
 </p>
 
-NATSA is the first near-data time series analysis accelerator based on Matrix Profile (SCRIMP). The key idea behind NATSA is to exploit modern 3D-stacked High Bandwidth Memory (HBM) to enable effcient and fast matrix profile computation near memory. NATSA provides three key benefits: 1) quickly computing the matrix profile for a wide range of applications by building specialized energy-effcient foating-point arithmetic processing units close to HBM, 2) improving the energy effciency and execution time by reducing the need for data movement over slow and energy-hungry buses between the computation units and the memory units, and 3) analyzing time seriesdata at scale by exploiting low-latency, high-bandwidth, and energy-efficient memory access provided by HBM.
+NATSA is the first near-data time series analysis accelerator based on Matrix Profile (SCRIMP). The key idea behind NATSA is to exploit modern 3D-stacked High Bandwidth Memory (HBM) to enable efficient and fast matrix profile computation near memory. NATSA provides three key benefits: 1) quickly computing the matrix profile for a wide range of applications by building specialized energy-efficient floating-point arithmetic processing units close to HBM, 2) improving the energy effciency and execution time by reducing the need for data movement over slow and energy-hungry buses between the computation units and the memory units, and 3) analyzing time seriesdata at scale by exploiting low-latency, high-bandwidth, and energy-efficient memory access provided by HBM.
 
-
-> :warning: This repository contains the codes used in NATSA's performance and energy evaluation for our ICCD 2020 paper using architectural simulation frameworks. **If you are interested on performing motif/discord discovery in time series using Matrix Profile**, please visit https://www.cs.ucr.edu/~eamonn/MatrixProfile.html, where you will find ready-to-use implementations for CPU and GPU.
+<p align="center">
+  <img width="368" height="335" src="https://github.com/CMU-SAFARI/NATSA/blob/main/images/natsa_diagram.png">
+</p>
 
 
 ## Citation
@@ -20,6 +21,9 @@ Ivan Fernandez, Ricardo Quislant, Christina Giannoula, Mohammed Alser, Juan Góm
 
 
 ## Repository Structure and Usage
+
+
+> :warning: This repository contains the codes used in NATSA's performance and energy evaluation for our ICCD 2020 paper using architectural simulation frameworks. **If you are interested on performing motif/discord discovery in time series using Matrix Profile**, please visit https://www.cs.ucr.edu/~eamonn/MatrixProfile.html, where you will find ready-to-use implementations for CPU and GPU.
 
 We point out next the repository structure and some important folders and files.
 ```
