@@ -1,9 +1,16 @@
+███╗   ██╗ █████╗ ████████╗███████╗ █████╗ 
+████╗  ██║██╔══██╗╚══██╔══╝██╔════╝██╔══██╗
+██╔██╗ ██║███████║   ██║   ███████╗███████║
+██║╚██╗██║██╔══██║   ██║   ╚════██║██╔══██║
+██║ ╚████║██║  ██║   ██║   ███████║██║  ██║
+╚═╝  ╚═══╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
+
 # NATSA: A Near-Data Processing Accelerator for Time Series Analysis
 
-NATSA is the first near-data time series analysis accelerator based on Matrix Profile. The key idea behind NATSA is to exploit modern 3D-stacked High Bandwidth Memory(HBM) to enable effcient and fast matrix profile computation near memory. NATSA provides three key benefits: 1) quickly computing the matrix profile for a wide range of applications by building specialized energy-effcient foating-point arithmetic processing units close to HBM, 2) improving the energy effciency and execution time by reducing the need for data movement over slow and energy-hungry buses between the computation units and the memory units, and 3) analyzing time seriesdata at scale by exploiting low-latency, high-bandwidth, and energy-efficient memory access provided by HBM.
+NATSA is the first near-data time series analysis accelerator based on Matrix Profile (SCRIMP). The key idea behind NATSA is to exploit modern 3D-stacked High Bandwidth Memory (HBM) to enable effcient and fast matrix profile computation near memory. NATSA provides three key benefits: 1) quickly computing the matrix profile for a wide range of applications by building specialized energy-effcient foating-point arithmetic processing units close to HBM, 2) improving the energy effciency and execution time by reducing the need for data movement over slow and energy-hungry buses between the computation units and the memory units, and 3) analyzing time seriesdata at scale by exploiting low-latency, high-bandwidth, and energy-efficient memory access provided by HBM.
 
 
-> :warning: This repository contains the codes used in NATSA's performance and energy evaluation for our ICCD 2020 paper. **If you are interested on performing motif/discord discovery in time series using Matrix Profile**, please visit https://www.cs.ucr.edu/~eamonn/MatrixProfile.html, where you will find out-of-the-box commodity implementations for this task.
+> :warning: This repository contains the codes used in NATSA's performance and energy evaluation for our ICCD 2020 paper using architectural simulation frameworks. **If you are interested on performing motif/discord discovery in time series using Matrix Profile**, please visit https://www.cs.ucr.edu/~eamonn/MatrixProfile.html, where you will find ready-to-use implementations for CPU and GPU.
 
 
 ## Citation
