@@ -18,7 +18,7 @@ gem5-aladdin: https://github.com/harvard-acc/gem5-aladdin
 McPAT: https://github.com/HewlettPackard/mcpat
 
 
-## Repository Structure and Installation
+## Repository Structure and Usage
 
 We point out next the repository structure and some important folders and files.
 ```
