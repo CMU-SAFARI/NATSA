@@ -19,6 +19,9 @@ alt="Watch our explanation of NATSA" width="440" border="10" /></a>
 - [Key Idea and Benefits of NATSA](#idea)
 - [Repository Structure and Usage](#structure)
 - [Prerequisites](#prerequisites)
+  - [General-purpose Core Simulation](#gpcsim)
+  - [NATSA Simulation](#natsasim)
+  - [Xeon Phi and GPU Execution](#xeonsim)
 - [Other Resources](#resources)
 - [Getting Help](#contact)
 - [Citing NATSA](#cite)
@@ -62,8 +65,7 @@ NATSA's evaluation requires the following simulation frameworks. Please refer to
 
 Additionaly, the Xeon Phi code requires a supported processor (e.g., Intel Xeon Phi 7210) and the GPU code requires a CUDA-capable GPU.
 
-### General-purpose cores simulation
-
+### <a name="gpcsim"></a>General-purpose Core Simulation
 The general purpose cores performance can be simulated using ramulator-pim enviromnment and the files provided in `zsimramulator` folder. Please refer to ramulator-pim documentation to set up the environment. The source code of SCRIMP, ready to be used in ramulator-pim is under the folder `zsimramulator/scrimp_src`, which has to be compiled before running the simulator. Once the desired configuration file is properly adjusted with the users's paths, the simulator can be started as follows:
 
 ```
@@ -78,15 +80,13 @@ The general purpose cores energy and area can be estimated using McPAT and the c
 ```
 
 
-### NATSA simulation
-
+### <a name="natsasim"></a>NATSA Simulation
 The performance, area and energy of NATSA can be simulated using gem5-aladdin simulation framework and the files provided in `aladdin` folder. Please refer to gem5-aladdin documentation to set up the environment. The source file of SCRIMP, optimized for NATSA is located under `aladdin/scrimp_src`, which can be tunned according to the desired time series parameters.
 
 To run it, simply launch gem5 with default HBM memory model and pass the `.cfg`file to aladdin.
 
 
-### Xeon Phi and GPU execution
-
+### <a name="xeonsim"></a>Xeon Phi and GPU Execution
 The code to perform the Xeon Phi executions is located under `xeonphi` folder, simply `make` it and run it with the desired time series (example time series are located under `timeseries` folder. This is an example execution for a time series of 524288 elements, window size of 4096 and 256 threads:
 
 ```
