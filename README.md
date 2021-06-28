@@ -4,7 +4,7 @@
   <img width="722" height="140" src="https://github.com/CMU-SAFARI/NATSA/blob/main/images/natsa_logo.png">
 </p>
 
-**NATSA** is the first **N**ear-Data Processing **A**ccelerator for **T**ime **S**eries **A**nalysis. We enable high-performance and energy-efficient time series analysis for a wide range of applications, by minimizing the overheads of data movement. This can enable efficient time series analysis on large-scale systems as well as embedded and mobile devices, where power consumption is a critical constraint (e.g., heart beat analysis on a mobile medical device to predict a heart attack). 
+**NATSA** is the first **N**ear-Data Processing **A**ccelerator for **T**ime **S**eries **A**nalysis. NATSA enables high-performance and energy-efficient time series analysis for a wide range of applications, by minimizing the overheads of data movement. This can enable efficient time series analysis on large-scale systems as well as embedded and mobile devices, where power consumption is a critical constraint (e.g., heartbeat analysis on a mobile medical device to predict a heart attack). 
 
 ***:bulb:Watch our [talk about NATSA](https://www.youtube.com/watch?v=PwhtSAVa_W4)!*** 
 Slides: (<a href="https://people.inf.ethz.ch/omutlu/pub/NATSA_time-series-analysis-near-data_iccd20-talk.pptx" target="_blank">pptx</a>) (<a href="https://people.inf.ethz.ch/omutlu/pub/NATSA_time-series-analysis-near-data_iccd20-talk.pdf" target="_blank">pdf</a>)
