@@ -55,6 +55,12 @@ We point out next the repository structure and some important folders and files.
 |   +-- scrimp_src/
 ```
 
+1. In the "aladdin" directory, you will find the configuration file needed to evaluate NATSA's performance, area and energy using gem5+Aladdin simulator. To do so, you will also find scrimp source code tuned for our architecture.
+2. In the "gpu" directory, you will find the gpu implementation of SCRIMP that we used in our evaluation for performance and energy comparison purposes. Please tune Makefile according to your GPU.
+3. In the "mcpat" directory, you will find the two config files used for the area and energy evaluation of the general-purpose cores.
+4. In the "timeseries" directory, you will find sample datasets to evaluate the performance of NATSA, the general-purpose cores and the commodity implementations.
+5. In the "xeonphi" directory, you will find the source code of the Xeon Phi implementation of SCRIMP, which takes advantage of the HBM memory available in such architecture.
+6. In the "zsimramulator" directory, you will find the required config files to evaluate the performance of the general-purpose cores in the ZSim+Ramulator simulation environment. Additionaly, you will find SCRIMP source code ready-to-use with such environment. 
 
 ## <a name="prerequisites"></a>Prerequisites
 NATSA's evaluation requires the following simulation frameworks. Please refer to their corresponding documentation to install them and their dependencies. 
