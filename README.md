@@ -66,14 +66,14 @@ NATSA's evaluation requires the following simulation frameworks. Please refer to
 Additionaly, the Xeon Phi code requires a supported processor (e.g., Intel Xeon Phi 7210) and the GPU code requires a CUDA-capable GPU.
 
 ### <a name="gpcsim"></a>General-purpose Core Simulation
-The general purpose cores performance can be simulated using ramulator-pim enviromnment and the files provided in `zsimramulator` folder. Please refer to ramulator-pim documentation to set up the environment. The source code of SCRIMP, ready to be used in ramulator-pim is under the folder `zsimramulator/scrimp_src`, which has to be compiled before running the simulator. Once the desired configuration file is properly adjusted with the users's paths, the simulator can be started as follows:
+The general-purpose core performance can be simulated using ramulator-pim environment and the files provided in `zsimramulator` folder. Please refer to ramulator-pim documentation to set up the environment. The source code of SCRIMP, ready to be used in ramulator-pim is under the folder `zsimramulator/scrimp_src`, which has to be compiled before running the simulator. Once the desired configuration file is properly adjusted with the users's paths, the simulator can be started as follows:
 
 ```
 ./build/opt/zsim config_files/scrimp/262144/2048/arm/hbm/64/scrimp_arm_hbm.cfg
 ```
 This example will evaluate SCRIMP in a arm-like 64-core configuration with HBM, using a time series of 262144 elements and a window size of 2048.
 
-The general purpose cores energy and area can be estimated using McPAT and the config files provided in `mcpat` folder. Please refer to McPAT documentation to set up the environment. The following example estimates the energy and area for the ARM-like configuration:
+The general-purpose core energy and area can be estimated using McPAT and the config files provided in `mcpat` folder. Please refer to McPAT documentation to set up the environment. The following example estimates the energy and area for the ARM-like configuration:
 
 ```
 ./mcpat -infile ARM_64.xml
