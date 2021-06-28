@@ -104,8 +104,8 @@ The code to perform the GPU executions is located under `gpu` folder, which requ
 * <a href="https://www.youtube.com/embed/PwhtSAVa_W4" target="_blank">Talk video</a> (10 minutes)
 
 ## <a name="contact"></a>Getting Help
-If you have any suggestion for improvement, please contact ivanferveg [at] gmail.com
-If you encounter bugs or have further questions or requests, you can raise an issue at the [issue page][issue].
+* If you have any suggestion for improvement, please contact ivanferveg [at] gmail.com
+* If you encounter bugs or have further questions or requests, you can raise an issue at the [issue page][issue].
 
 [issue]: https://github.com/CMU-SAFARI/NATSA/issues
 
