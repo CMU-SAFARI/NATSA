@@ -3,4 +3,4 @@
 # SCRIMP
 #########################################################################################################
 scrimp_zsim:
-	g++ -O3 ./src/scrimp_zsim.cpp ./src/tools.cpp -o ./bin/scrimp_zsim -std=c++11 -fopenmp
+	g++ -O3 ./scrimp_zsim.cpp ./tools.cpp -o ./scrimp_zsim -std=c++11 -fopenmp

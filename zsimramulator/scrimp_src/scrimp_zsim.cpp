@@ -39,7 +39,7 @@ The second column of the output file is the matrix profile index.
 #include <chrono>
 #include <omp.h>
 #include "mprofile.h"
-#include "/home/ifernandez/ethz/zsimramulator/misc/hooks/zsim_hooks.h"
+#include "/path/to/zsimramulator/misc/hooks/zsim_hooks.h"
 
 
 int numThreads, exclusionZone;
